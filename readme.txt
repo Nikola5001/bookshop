@@ -1,0 +1,1 @@
+Aplikacija služi za online prodaju knjiga, koristi Django framework.

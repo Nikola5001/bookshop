@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bookshop App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% load static %}
+    <!--
+    <link rel="stylesheet" href="{% static 'musicshop/css/style.css' %}">
+    <script src="{% static 'musicshop/js/dropdown.js' %}"></script> 
+    -->  
+</head>
+<body style="background-color:rgb(100, 99, 99);">
+<nav class="navbar navbar-light" style="background-color:rgb(0, 17, 255);">
+    <a href="{% url 'index' %}" class="navbar-brand" style="background-color:#FFCC33;color:#000000;border-width:10px;border-color:#FFCC33;border-style:solid;border-spacing:30px;border-radius: 5px;">BookShop</a>
+    <a href="{% url 'admin:index' %}" class = 'navbar-link btn-lg' style="background-color:#FFCC33;color:#000000;">Admin</a>
+    {% if user.is_authenticated %}
+      <!--<div align=right>User: {{ user.get_username }}</div>
+      <a href="{% url 'logout' %}" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Odjava</a>-->
+      <div class="dropdown" style="float:right;">
+        <button onclick="myFunction()" class="dropbtn" style="background-color:#FFCC33;color:#000000;">{{ user.get_username }}</button>
+        <div id="myDropdown" class="dropdown-content" style="right:0;">
+          <a href="#">Moj račun</a>
+          <a href="#">Moje recenzije</a>
+          <a href="#">Odjava</a>
+        </div>
+      </div>
+    {% else %} 
+        <a href="#" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Prijava</a>
+      
+    {% endif %}
+</nav>
+
+<br>
+{% block content %}
+
+<div>
+  
+  {% for Artikl in shelf %}
+    <li>
+        <a href="{% url 'artikl-detail' pk=Artikl.pk %}" style="background-color:rgb(255, 255, 255);color:#000000;">{{ Artikl.naziv }}</a>
+        <d style="background-color:#FFCC33;color:#000000;">{{ Artikl.cijena }} kn</d>
+    </li> 
+  {% endfor %}
+  
+</div>
+
+<!--<div class="card-columns">
+    {% for Artikl in shelf %}
+    <div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="{{ Artikl.slika.url }}">
+  <div class="card-body">
+    <h5 class="card-title">{{ Artikl.naziv }}</h5>
+    <p class="card-text">{{ Artikl.opis }}</p>
+    <h5 class="card-title">{{ Artikl.cijena }} kn</h5>  
+   <div class="card-footer bg-transparent border-dark">
+   <center>
+       <a href="update/{{Artikl.id}}" class="btn btn-warning" id = '{{Artikl.id}}'>edit</a>
+       <a href="delete/{{Artikl.id}}" class="btn btn-danger" id = '{{Artikl.id}}'>delete</a>
+    </center>
+    </div>
+  </div>
+</div>
+    {% endfor %}
+</div>-->
+{% endblock %}
+</body>
+</html>
