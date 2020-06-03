@@ -1,0 +1,61 @@
+{% extends "bookshop/bookshop.html" %}
+
+{% block content %}
+  <div align=center>
+    <h1>Artikl: {{ artikl.naziv }}</h1>
+
+    <div>
+      {% load static %}
+      <img src="{{ artikl.slika.url }}" width="250" height="300">
+    </div>
+    <d style="background-color:#FFCC33;color:#000000;">{{ artikl.cijena }} kn</d>
+    <a href="{% url 'checkout-add' pk=artikl.pk %}" style="background-color:rgb(248, 224, 153);color:#000000;">Dodaj u košaricu</a>
+        
+    <div style="margin-top:25px;">
+      {{ artikl.opis }}
+    </div>  
+  </div>
+
+  <div style="margin-top: 50px;">
+    <h2>Recenzije:</h2>
+    <table style="width:100%">
+      <tr>
+        <th>Korisnik</th>
+        <th>Komentar</th>
+        <th>Ocjena</th>
+      </tr>
+      {% for Recenzija in recenzije %}
+        {% if Recenzija.artikl == artikl %}
+          <tr>
+            <th>{{Recenzija.user.get_username}}</th>
+            <th>"{{Recenzija.komentar}}"</th>
+            <th>{{Recenzija.ocjena}}/5</th>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </table>
+  </div>
+  <div style="margin-top: 25px">
+    {% if user.is_authenticated %}
+      <h1 style="background-color:#000000;color:#FFFF99;">Dodaj recenziju</h1>
+      <form method="post">
+        {% csrf_token %}
+        <table class = 'w-50 table table-light' style="border-radius:10px;background-color:#FFFF99;">
+          <tr>
+              <th>{{ new_recenzija.komentar.label }}</th>
+              <td>{{ new_recenzija.komentar }}</td>
+          </tr>
+          <tr>
+            <th>{{ new_recenzija.ocjena.label }}</th>
+            <td>{{ new_recenzija.ocjena }}</td>
+          </tr>
+          {{ new_recenzija.artikl.as_hidden }}
+          {{ new_recenzija.user.as_hidden }}
+
+          </table>
+        <input type="submit" value="Submit">
+      </form>       
+    {% endif %}
+
+  </div>
+{% endblock %}

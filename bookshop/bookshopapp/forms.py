@@ -22,3 +22,11 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2', )
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'
+        
+class ArtiklSearchForm(forms.Form):
+    name = forms.CharField(required=False)

@@ -1,0 +1,34 @@
+{% extends "bookshop/bookshop.html" %}
+
+{% block content %}
+<div>
+  
+  {% for Klasa in klase %}
+    <a href="{% url 'filter-view' pk=Klasa.pk %}" class="navbar-brand" style="background-color:#FFCC33;color:#000000;border-width:10px;border-color:#FFCC33;border-style:solid;border-spacing:30px;border-radius: 5px;">
+      {{ Klasa.naziv }}</a>
+  {% endfor %}
+  
+</div>
+<br>
+
+<div>
+  <form method="GET" action="" id="searchform">
+    <label for="id_search">Pretraga: </label>
+    <input class="searchfield" id="searchbox" name="q" type="text" value="{{ request.GET.q }}"/>
+    <input type="submit" value="Traži">
+  </form>
+</div>
+<br>
+
+<div>
+  
+  {% for Artikl in shelf %}
+    <li>
+        <a href="{% url 'artikl-detail' pk=Artikl.pk %}" style="background-color:rgb(255, 255, 255);color:#000000;">{{ Artikl.naziv }}</a>
+        <d style="background-color:#FFCC33;color:#000000;">{{ Artikl.cijena }} kn</d>
+    </li> 
+  {% endfor %}
+  
+</div>
+  
+{% endblock %}

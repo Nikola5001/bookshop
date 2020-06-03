@@ -1,0 +1,29 @@
+{% extends "bookshop/bookshop.html" %}
+
+{% block content %}
+  <div align=center>
+    <h1>{{ user.get_username }}: moj račun</h1>
+
+    <table style="margin-top: 50px;">
+      <th></th><th></th>
+      <tr>
+        <td>
+          Email: {{ user.email }}
+        </td>
+        <td>
+          <a href="{% url 'update-email' user_id=user.id %}" class="btn btn-warning">Promijeni email</a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Lozinka: ********
+        </td>
+        <td>
+          <a href="{% url 'change-password' %}" class="btn btn-warning">Promijeni lozinku</a>
+        </td>
+      </tr>
+    </table>
+      
+  </div>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'bookshop/bookshop.html' %}
+{% block content %}
+    <center>
+    <h1 class="display-3" style="background-color:#000000;color:#FFFF99;">Update email</h1>
+    <form method = 'POST' enctype="multipart/form-data">
+        {% csrf_token %}
+        <table class = 'w-50 table table-light' style="border-radius:10px;background-color:#FFFF99;">
+            
+            <tr>
+                <th>{{ user_form.email.label }}</th>
+                <td>{{ user_form.email }}</td>
+            </tr>
+            {{ user_form.username.as_hidden }}
+            {{ user_form.first_name.as_hidden }}
+            {{ user_form.last_name.as_hidden }}
+            {{ user_form.password.as_hidden }}
+            {{ user_form.groups.as_hidden }}
+            {{ user_form.user_permissions.as_hidden }}
+            {{ user_form.is_staff.as_hidden }}
+            {{ user_form.is_active.as_hidden }}
+            {{ user_form.is_superuser.as_hidden }}
+            {{ user_form.last_login.as_hidden }}
+            {{ user_form.date_joined.as_hidden }}
+
+        </table>
+        <button type="submit" class="btn btn-lg btn-warning">Submit</button>
+    </form>
+</center>
+{% endblock %}

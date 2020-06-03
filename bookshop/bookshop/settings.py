@@ -118,9 +118,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-# DataFlair Static Files Settings
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static-files')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static-files'),
+)
+
 #DataFlair #User_Uploaded_Files
-MEDIA_URL = 'media/'
 MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

@@ -1,0 +1,29 @@
+{% extends "bookshop/bookshop.html" %}
+
+{% block content %}
+  <div align=center>
+    <h1>{{ user.get_username }}: recenzije</h1>
+  </div>
+
+  <table style="margin-top: 50px;border-collapse: separate;border-spacing: 15px;" align="center">
+    <th></th><th></th><th></th><th></th><th></th>
+    {% for recenzija in object_list %}
+      <tr>
+        <td>
+          {{ recenzija.artikl.naziv }}:
+        </td><td>
+          {{ recenzija.komentar }},
+        </td><td>
+          {{ recenzija.ocjena }}/5
+        </td><td>
+          <a href="update_recenzija/{{recenzija.id}}" class="btn btn-warning" id = '{{recenzija.id}}'>Promjeni</a>
+        </td><td>
+          <a href="delete_recenzija/{{recenzija.id}}" class="btn btn-danger" id = '{{recenzija.id}}'>Izbriši</a>
+        </td>
+      </tr>
+    {% empty %}
+      <li>Nemate recenzija</li>
+    {% endfor %}
+  </table>
+
+{% endblock %}

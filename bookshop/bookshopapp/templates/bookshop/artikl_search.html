@@ -1,0 +1,15 @@
+{% extends "bookshop/bookshop.html" %}
+
+{% block content %}
+<div>
+  
+  {% for Artikl in shelf %}
+    <li>
+        <a href="{% url 'artikl-detail' pk=Artikl.pk %}" style="background-color:rgb(255, 255, 255);color:#000000;">{{ Artikl.naziv }}</a>
+        <d style="background-color:#FFCC33;color:#000000;">{{ Artikl.cijena }} kn</d>
+    </li> 
+  {% endfor %}
+  
+</div>
+  
+{% endblock %}

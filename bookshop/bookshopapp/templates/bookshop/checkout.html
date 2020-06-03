@@ -1,0 +1,122 @@
+{% extends "bookshop/bookshop.html" %}
+
+{% block kosarica %}
+{% endblock %}
+
+{% block content %}
+<div style="display: table; width:100%">
+<div style="display: table-row">
+    <div style="display: table-cell;">
+        <h1>Košarica</h1>
+        {% if not kosarica %}
+            <h3>Ukupna cijena: 0.00kn</h3><br><br>
+            <h3>nemate artikala u košarici</h3>
+        {%else%}
+            <h3>Ukupna cijena: {{SumCijena}}kn</h3>
+            <h3># artikala: {{CountArtikl}}</h3>
+            <a href="{% url 'checkout-empty' %}" style="font-size: 25px;background-color:black;color: #818181;">isprazni košaricu</a><br><br>
+            <table>
+                <th>Artikl:</th><th>Cijena:</th><th></th>
+                {% for artikl in kosarica %}
+                <tr>
+                    <td>{{artikl.naziv}}</td><td>{{artikl.cijena}}</td>
+                    <td><a href="{% url 'checkout-delete' pk=artikl.pk %}" style="background-color:rgb(255, 146, 146);color:#000000;">Makni iz košarice</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </div>
+    <div style="display: table-cell;">
+        <form action="{% url 'checkout-success' %}" method="POST">{% csrf_token %}
+            <table>
+                <tr>
+                    <th><label for="id_search">Adresa: </label></th>
+                    <td><input class="textfield" id="adresa" name="adresa" size="50"/></td>
+                </tr>
+                <tr>
+                    <th><label for="id_search">Poštanski broj: </label></th>
+                    <td><input class="textfield" id="pb" name="pb" size="7"/></td>
+                </tr>
+                <tr>
+                    <th><label for="id_search">Županija: </label></th>
+                    <td><select id="zupanija" name="zupanija" >
+                        <option selected>Odaberite...</option>
+                        <option value="Bjelovarsko-bilogorska">Bjelovarsko-bilogorska</option>
+                        <option value="Brodsko-posavska">Brodsko-posavska</option>
+                        <option value="Dubrovačko-neretvanska">Dubrovačko-neretvanska</option>
+                        <option value="Grad Zagreb">Grad Zagreb</option>
+                        <option value="Istarska">Istarska</option>
+                        <option value="Karlovačka">Karlovačka</option>
+                        <option value="Koprivničko-križevačka">Koprivničko-križevačka</option>
+                        <option value="Krapinsko-zagorska">Krapinsko-zagorska</option>
+                        <option value="Ličko-senjska">Ličko-senjska</option>
+                        <option value="Međimurska">Međimurska</option>
+                        <option value="Osječko-baranjska">Osječko-baranjska</option>
+                        <option value="Požeško-slavonska">Požeško-slavonska</option>
+                        <option value="Primorsko-goranska">Primorsko-goranska</option>
+                        <option value="Šibensko-kninska">Šibensko-kninska</option>
+                        <option value="Sisačko-moslavačka">Sisačko-moslavačka</option>
+                        <option value="Splitsko-dalmatinska">Splitsko-dalmatinska</option>
+                        <option value="Varaždinska">Varaždinska</option>
+                        <option value="Virovitičko-podravska">Virovitičko-podravska</option>
+                        <option value="Vukovarsko-srijemska">Vukovarsko-srijemska</option>
+                        <option value="Zadarska">Zadarska</option>
+                        <option value="Zagrebačka">Zagrebačka</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <th><label for="id_search">Način plačanja: </label></th>
+                    <td>
+                        <select id="placanje" name="placanje">
+                            <option selected>Odaberite...</option>
+                            <option value="kartica">Kartica</option>
+                            <option value="paypal">Paypal</option>
+                        </select>
+                    </td>
+                </tr>
+                <div id="karticaDiv" style="display:none;">
+                    <tr>
+                        <th><label for="id_search">Broj kreditne kartice: </label></th>
+                        <td><input class="textfield" id="card_no" name="card_no" size="50"/></td>
+                    </tr>
+                    <tr>
+                        <th><label for="id_search">Datum isteka: </label></th>
+                        <td><input class="textfield" id="exp_date" name="exp_date" size="7"/></td>
+                    </tr>
+                    <tr>
+                        <th><label for="id_search">CVV: </label></th>
+                        <td><input class="textfield" id="cvv" name="cvv" size="7"/></td>
+                    </tr>
+                </div>
+                <div id="paypalDiv" style="display:none;">
+                    <tr>
+                        <th><label for="id_search">Email: </label></th>
+                        <td><input class="textfield" id="card_no" name="card_no" size="50"/></td>
+                    </tr>
+                    <tr>
+                        <th><label for="id_search">Lozinka: </label></th>
+                        <td><input class="textfield" id="card_no" name="card_no" size="50"/></td>
+                    </tr>
+                </div>
+                <tr>
+                    <th></th>
+                    <td>
+                        <input type="checkbox" id="eracun" name="eracun" value="yes">
+                        <label for="eracun">Želim e-racun poslan na moj e-mail:</label><br>
+                    </td>
+                </tr>
+                <div id="eracunDiv" style="display:none;">
+                    <tr>
+                        <th></th>
+                        <td><input class="textfield" id="eracunEmail" name="eracunEmail" value="{{ user.email }}" size="50"/></td>
+                    </tr>
+                </div>                
+                <tr align="right">
+                    <th></th>
+                    <td><input type="submit" class="dropbtn" style="background-color:#FFCC33;color:#000000;" value="KUPI"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div></div>
+{% endblock %}

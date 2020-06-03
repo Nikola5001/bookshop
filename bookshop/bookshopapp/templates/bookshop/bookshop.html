@@ -5,64 +5,81 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     {% load static %}
-    <!--
-    <link rel="stylesheet" href="{% static 'musicshop/css/style.css' %}">
-    <script src="{% static 'musicshop/js/dropdown.js' %}"></script> 
-    -->  
+    <link rel="stylesheet" type="text/css" href="{% static 'bookshop/css/style.css' %}">
+    <script src="{% static 'bookshop/js/dropdown.js' %}"></script>  
 </head>
-<body style="background-color:rgb(100, 99, 99);">
+<body> <!--background-color:rgb(100, 99, 99)-->
 <nav class="navbar navbar-light" style="background-color:rgb(0, 17, 255);">
-    <a href="{% url 'index' %}" class="navbar-brand" style="background-color:#FFCC33;color:#000000;border-width:10px;border-color:#FFCC33;border-style:solid;border-spacing:30px;border-radius: 5px;">BookShop</a>
-    <a href="{% url 'admin:index' %}" class = 'navbar-link btn-lg' style="background-color:#FFCC33;color:#000000;">Admin</a>
+    <a href="{% url 'index' %}" class="navbar-brand" style="background-color:rgb(173, 189, 192);color:#000000;border-width:10px;border-color:rgb(173, 189, 192);border-style:solid;border-spacing:30px;border-radius: 5px;">BookShop</a>
     {% if user.is_authenticated %}
-      <!--<div align=right>User: {{ user.get_username }}</div>
-      <a href="{% url 'logout' %}" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Odjava</a>-->
       <div class="dropdown" style="float:right;">
-        <button onclick="myFunction()" class="dropbtn" style="background-color:#FFCC33;color:#000000;">{{ user.get_username }}</button>
+        <button onclick="myFunction()" class="dropbtn" style="background-color:rgb(173, 189, 192)rgb(173, 189, 192);color:#000000;">{{ user.get_username }}</button>
         <div id="myDropdown" class="dropdown-content" style="right:0;">
-          <a href="#">Moj račun</a>
-          <a href="#">Moje recenzije</a>
-          <a href="#">Odjava</a>
+          <a href="{% url 'my-profile' %}">Moj račun</a>
+          <a href="{% url 'recenzija-list' %}">Moje recenzije</a>
+          {% if user.is_staff or user.is_superuser %}
+          <a href="{% url 'admin:index' %}">Administracija</a>
+          {% endif %}
+          <a href="{% url 'logout' %}"">Odjava</a>
         </div>
       </div>
     {% else %} 
-        <a href="#" class="navbar-link btn-lg" style="background-color:#FFCC33;color:#000000;">Prijava</a>
+        <a href="{% url 'login' %}" class="navbar-link btn-lg" style="background-color:rgb(173, 189, 192);color:#000000;">Prijava</a>
       
     {% endif %}
 </nav>
+
+{% block kosarica %}
+<div class="sidenav">
+  <a href="{% url 'checkout-view' %}">Košarica</a>
+  <d style="padding: 6px 8px 6px 16px;text-decoration: none;font-size: 14px;color: #818181;display: block;">Ukupna cijena: {{SumCijena}}kn</d>
+  <d style="padding: 6px 8px 6px 16px;text-decoration: none;font-size: 14px;color: #818181;display: block;"># Artikala: {{CountArtikl}}</d>
+  <a href="{% url 'checkout-empty' %}" style="font-size: small;">isprazni košaricu</a>
+</div>
+{% endblock %}
+<div class="main" style="margin-top: 50px;">
 
 <br>
 {% block content %}
 
 <div>
-  
-  {% for Artikl in shelf %}
-    <li>
-        <a href="{% url 'artikl-detail' pk=Artikl.pk %}" style="background-color:rgb(255, 255, 255);color:#000000;">{{ Artikl.naziv }}</a>
-        <d style="background-color:#FFCC33;color:#000000;">{{ Artikl.cijena }} kn</d>
-    </li> 
-  {% endfor %}
-  
+  <form method="GET" action="" id="searchform">
+    <label for="id_search">Pretraga: </label>
+    <input class="searchfield" id="searchbox" name="pretraga" type="search"/>
+    <select id="klasa" name="klasa">
+      <option selected>Zanr...</option>
+      {% for Zanr in zanrovi %}
+      <option value="{{ Zanr.naziv }}">{{ Zanr.naziv }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <label for="cijena_min">Minimalna cijena: </label>
+    <input class="searchfield" id="searchbox" name="cijena_min" type="search"/>
+    <label for="cijena_max">Maximalna cijena: </label>
+    <input class="searchfield" id="searchbox" name="cijena_max" type="search"/>
+    <input type="submit" value="Traži">
+  </form>
+</div>
+<br>
+
+<div>
+  <table style="border-collapse: separate;border-spacing: 10px;">
+    <tr>
+      <th>Artikl</th>
+      <th>Cijena</th>
+      <th></th>
+    </tr>
+    {% for Artikl in shelf %}
+      <tr>
+        <td><a href="{% url 'artikl-detail' pk=Artikl.pk %}" style="background-color:rgb(255, 255, 255);color:#000000;">{{ Artikl.naziv }}</a></td>
+        <td><d style="background-color:rgb(164, 183, 199);color:#000000;">{{ Artikl.cijena }} kn</d></td>
+        <td><a href="{% url 'checkout-add' pk=Artikl.pk %}" style="background-color:rgb(248, 224, 153);color:#000000;">Dodaj u košaricu</a></td>
+      </tr>
+    {% endfor %}
+  </table>
 </div>
 
-<!--<div class="card-columns">
-    {% for Artikl in shelf %}
-    <div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="{{ Artikl.slika.url }}">
-  <div class="card-body">
-    <h5 class="card-title">{{ Artikl.naziv }}</h5>
-    <p class="card-text">{{ Artikl.opis }}</p>
-    <h5 class="card-title">{{ Artikl.cijena }} kn</h5>  
-   <div class="card-footer bg-transparent border-dark">
-   <center>
-       <a href="update/{{Artikl.id}}" class="btn btn-warning" id = '{{Artikl.id}}'>edit</a>
-       <a href="delete/{{Artikl.id}}" class="btn btn-danger" id = '{{Artikl.id}}'>delete</a>
-    </center>
-    </div>
-  </div>
-</div>
-    {% endfor %}
-</div>-->
 {% endblock %}
+</div>
 </body>
 </html>
