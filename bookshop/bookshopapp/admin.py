@@ -17,7 +17,7 @@ class ArtiklZanr(admin.ModelAdmin):
 
 class ArtiklAutor(admin.ModelAdmin):
     model = Autor
-    list_display = ['ime','prezime',]
+    list_display = ['ime',]
 
 class ArtiklRecenzija(admin.ModelAdmin):
     model = Recenzija

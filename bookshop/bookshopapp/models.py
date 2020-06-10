@@ -8,7 +8,6 @@ class Zanr(models.Model):
 
 class Autor(models.Model):
     ime = models.CharField(max_length = 50)
-    prezime = models.CharField(max_length = 50)
 
 class Artikl(models.Model):
     naziv = models.CharField(max_length = 50)
